@@ -1,0 +1,806 @@
+
+
+            Folder Structure
+31. What is the purpose of main.ts file?
+Answer:
+The main.ts file is the entry point of the Angular application. It bootstraps the root module (AppModule) to launch the application.
+
+Example:
+
+typescript
+Copy code
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { AppModule } from './app/app.module';
+
+platformBrowserDynamic().bootstrapModule(AppModule)
+  .catch(err => console.error(err));
+32. What is the role of package.json file?
+Answer:
+The package.json file manages the project’s dependencies, scripts, and metadata.
+
+Dependencies: Lists libraries required for the project.
+Scripts: Commands to automate tasks (e.g., npm start, npm test).
+Example:
+
+json
+Copy code
+{
+  "dependencies": {
+    "@angular/core": "^12.0.0"
+  },
+  "scripts": {
+    "start": "ng serve"
+  }
+}
+33. How is the package.json file different from package-lock.json file?
+Answer:
+
+package.json: Lists dependencies with version ranges.
+package-lock.json: Records the exact dependency versions installed, ensuring consistent builds.
+34. What is the role of tsconfig.json file?
+Answer:
+The tsconfig.json file configures TypeScript compiler options.
+
+Example Setting:
+json
+Copy code
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "commonjs"
+  }
+}
+35. What is the role of angular.json file?
+Answer:
+The angular.json file is the workspace configuration file. It defines how the project is built and served.
+
+Example Settings: Output paths, assets, and styles.
+Example:
+
+json
+Copy code
+{
+  "projects": {
+    "app-name": {
+      "architect": {
+        "build": {
+          "options": {
+            "outputPath": "dist/app-name",
+            "assets": ["src/assets"]
+          }
+        }
+      }
+    }
+  }
+}
+36. What is the use of the assets folder in Angular?
+Answer:
+The assets folder stores static files like images, icons, and stylesheets, which are accessible via the app without processing.
+
+Example:
+Image path in the template:
+
+html
+Copy code
+<img src="assets/images/logo.png" alt="Logo">
+Data Binding
+37. What is data binding in Angular?
+Answer:
+Data binding synchronizes the data between the UI and the component.
+
+38. How many types of binding are supported by Angular?
+Answer:
+
+Interpolation: {{ value }}
+Property Binding: [property]="value"
+Event Binding: (event)="method()"
+Two-Way Binding: [(ngModel)]="value"
+39. What is Interpolation? Give an example.
+Answer:
+Interpolation binds data from the component to the view using {{}}.
+
+Example:
+
+typescript
+Copy code
+<p>{{ name }}</p>
+40. What is Property Binding? Where can you implement property binding?
+Answer:
+Property binding binds component properties to HTML attributes using [ ].
+
+Example:
+
+html
+Copy code
+<input [value]="name">
+41. How many ways can you achieve property binding?
+Answer:
+
+Using brackets ([ ])
+Using bind syntax (bind-property)
+Benefit: Ensures data flows from the component to the view.
+
+42. When do we use property binding, and when do we use interpolation?
+Answer:
+
+Interpolation: Use for string data.
+Property Binding: Use for setting HTML element attributes.
+43. What is Class Binding? Give an example.
+Answer:
+Class binding dynamically adds/removes classes to elements.
+
+Example:
+
+html
+Copy code
+<div [class.active]="isActive"></div>
+44. What is Style Binding? Give an example.
+Answer:
+Style binding dynamically sets inline styles.
+
+Example:
+
+html
+Copy code
+<div [style.color]="color"></div>
+45. What is Attribute Binding?
+Answer:
+It binds attributes like aria-label.
+
+Example:
+
+html
+Copy code
+<button [attr.aria-label]="label"></button>
+46. What is Event Binding?
+Answer:
+It binds an event from the view to a method in the component.
+
+Example:
+
+html
+Copy code
+<button (click)="onClick()">Click Me</button>
+47. How can you implement event binding?
+Answer:
+Use () to bind events.
+
+Example:
+
+html
+Copy code
+<input (input)="onInputChange($event)">
+49. What is Two-Way Binding?
+Answer:
+Two-way binding combines property and event binding.
+
+Example:
+
+html
+Copy code
+<input [(ngModel)]="name">
+50. What is a Template Reference Variable?
+Answer:
+A variable that references an element in the template.
+
+Example:
+
+html
+Copy code
+<input #inputBox>
+<p>{{ inputBox.value }}</p>
+Components
+56. What is a component in Angular?
+Answer:
+A component controls a part of the UI with its template, logic, and styles.
+
+57. How can we create a component?
+Answer:
+Use Angular CLI:
+
+bash
+Copy code
+ng generate component component-name
+59. What is a Component Decorator?
+Answer:
+@Component decorator adds metadata to a class.
+
+Example:
+
+typescript
+Copy code
+@Component({
+  selector: 'app-example',
+  templateUrl: './example.component.html'
+})
+Components
+66. What is the difference between providers present in a component and providers present in an appmodule file?
+
+Component Providers: They are scoped to that component and its child components. These providers only exist during the component's lifecycle.
+AppModule Providers: They are global and accessible throughout the application. Providers in AppModule can be used in any component in the application.
+67. What is a Dynamic Component?
+A dynamic component is a component that is created and added to the DOM at runtime rather than being declared in the template. This is achieved using Angular's ComponentFactoryResolver.
+
+68. What is the use of ComponentFactoryResolver service?
+ComponentFactoryResolver is used to create and insert components dynamically. It helps resolve a component factory and then allows for the creation of the component in the view.
+
+69. Give an example of a Dynamic Component.
+Example:
+
+typescript
+Copy code
+import { ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
+import { MyDynamicComponent } from './my-dynamic.component';
+
+constructor(private resolver: ComponentFactoryResolver, private container: ViewContainerRef) {}
+
+loadComponent() {
+  const factory = this.resolver.resolveComponentFactory(MyDynamicComponent);
+  this.container.createComponent(factory);
+}
+70. What is a nested component?
+A nested component is a component that is included or used inside another component, i.e., a parent-child relationship between components.
+
+71. What is the role of a selector?
+The selector is a string used to define the tag name of the component when it is used in a template. It links the component to the template in which it will be rendered.
+
+72. What is an entry component?
+Entry components are those that are not referenced directly in templates but are created dynamically via code (for example, with ComponentFactoryResolver).
+
+73. What is the component hook lifecycle?
+Angular components have a lifecycle managed by hooks like:
+
+ngOnInit(): Called once after the component is initialized.
+ngOnChanges(): Called when an input property changes.
+ngDoCheck(): Called on every change detection cycle.
+ngAfterViewInit(): Called after the component’s view is initialized.
+74. If there is a nested component (parent and child), then is the order of lifecycle hooks the same or different?
+The order of lifecycle hooks in the parent and child components is the same but the child component’s hooks will be called before the parent’s hooks.
+
+75. What is the difference between @ViewChild and @ViewChildren?
+
+@ViewChild: Retrieves a single reference of a child component or DOM element.
+@ViewChildren: Retrieves multiple references of child components or DOM elements.
+76. What is the difference between @ContentChild and @ContentChildren?
+
+@ContentChild: Retrieves a single reference to a projected content element in the DOM.
+@ContentChildren: Retrieves multiple references to projected content elements.
+77. What is the difference between ngDoCheck and ngOnChange?
+
+ngDoCheck: Invoked during every change detection cycle and allows for custom change detection.
+ngOnChange: Called when any data-bound property of a component changes.
+78. How can we pass data from component to component?
+Data can be passed between components using input and output properties. For example, a parent component can pass data to a child using @Input() and the child can emit events using @Output().
+
+79. How can we pass data from the parent component to the child component using @Input?
+In the parent:
+
+html
+Copy code
+<app-child [inputData]="parentData"></app-child>
+In the child:
+
+typescript
+Copy code
+@Input() inputData: string;
+80. How can we pass data from the child component to the parent component using @Output?
+In the child component:
+
+typescript
+Copy code
+@Output() dataChange = new EventEmitter<string>();
+
+sendData() {
+  this.dataChange.emit('Hello Parent');
+}
+In the parent:
+
+html
+Copy code
+<app-child (dataChange)="receiveData($event)"></app-child>
+81. What is an Event Emitter?
+EventEmitter is a class used to send events from a child component to its parent component. It is used in conjunction with the @Output() decorator.
+
+Directives
+82. What are directives?
+Directives are special markers in Angular that manipulate the DOM or add behavior to an element. There are three main types: structural, attribute, and component directives.
+
+83. How many types of directives are supported by Angular?
+
+Component Directives: These are directives with templates.
+Structural Directives: These change the structure of the DOM (e.g., *ngIf, *ngFor).
+Attribute Directives: These modify the appearance or behavior of an element (e.g., ngClass, ngStyle).
+84. What is a @Directive decorator?
+The @Directive decorator is used to define a directive and to specify the metadata, such as the selector for the directive.
+
+85. Can we create a constructor in our directive? If yes, then how?
+Yes, we can create a constructor in a directive. A constructor is typically used to inject services:
+
+typescript
+Copy code
+@Directive({
+  selector: '[appHighlight]'
+})
+export class HighlightDirective {
+  constructor(private el: ElementRef) {}
+}
+86. What is a component directive? Give an example.
+Component directives are Angular components used as directives. For example, <app-child></app-child> is a component directive in the parent template.
+
+87. What is a structural directive?
+Structural directives are used to change the DOM layout by adding or removing elements. Examples include *ngIf, *ngFor.
+
+88. Name some structural directives provided by Angular.
+
+*ngIf
+*ngFor
+*ngSwitch
+89. What is the difference between ngIf and hidden?
+
+ngIf removes the element from the DOM entirely if the condition is false.
+hidden just hides the element by setting its CSS display: none.
+*90. How can we use the then and else keywords with the ngIf directive? Explain with an example.
+Example:
+
+html
+Copy code
+<div *ngIf="isTrue; then block; else noBlock"></div>
+<ng-template #block>True Block</ng-template>
+<ng-template #noBlock>False Block</ng-template>
+91. What are the keywords used at the time of ngSwitchCase, and what is the role of these keywords?
+
+ngSwitch: A container element used to evaluate expressions.
+ngSwitchCase: A child element that defines a case in the switch expression.
+*92. What is ngFor, and what are the exported values of the ngFor directive?
+*ngFor is used to loop over an array and display the elements. It provides access to index, first, last, even, odd as local variables.
+
+93. What is the difference between ngFor and ngForOf?
+*ngFor is the shorthand for the directive, while ngForOf is used with the ngFor directive when explicitly using it in the template.
+
+*94. Why is * a prefix for structural directives? Can we use structural directives without using ?
+The * symbol is shorthand for Angular's structural directives. Without *, you would need to use the <ng-template> tag.
+
+95. How many structural directives can we implement on a single element?
+You can implement only one structural directive per element, but you can combine multiple attributes like [ngClass] with structural directives.
+
+96. How can list items be tracked by default?
+By default, Angular tracks items by their object reference, meaning if the reference changes, Angular considers the item as changed.
+
+97. Can we provide our own mechanism for tracking elements? If yes, then how?
+Yes, we can use the trackBy function to track items more efficiently in a list.
+
+98. What are attribute directives? Give an example.
+Attribute directives are used to modify the behavior or appearance of DOM elements. Example: ngClass, ngStyle.
+
+99. What is the difference between an attribute directive and a component directive?
+
+Attribute directives: Modify the behavior or style of an element.
+Component directives: Encapsulate both logic and UI (template).
+100. What is ng-template?
+ng-template is used to define a template that can be conditionally included in the DOM, typically used with structural directives.
+
+101. What is a Host Listener?
+@HostListener allows us to listen for events on the host element and react to those events.
+
+103. What is the purpose of @HostBinding?
+Answer:
+@HostBinding is a decorator used in Angular to bind a property of the host element (the element to which the directive is applied). This allows the directive to modify the properties of the host element dynamically. For example, you can change the class or style of the host element directly from the directive.
+
+Example:
+
+typescript
+Copy code
+@Directive({
+  selector: '[appHighlight]'
+})
+export class HighlightDirective {
+  @HostBinding('style.backgroundColor') backgroundColor: string = 'yellow';
+}
+Pipes
+104. What is pipes and how we can use in Angular?
+Answer:
+Pipes are used to transform data in Angular templates. They are commonly used for formatting data (like dates, currency, etc.). You can use pipes directly in Angular templates using the | operator.
+
+Example:
+
+html
+Copy code
+<p>{{ price | currency }}</p>
+105. Name some built-in pipes provided by Angular.
+Answer:
+Some built-in pipes include:
+
+DatePipe
+UpperCasePipe
+LowerCasePipe
+CurrencyPipe
+PercentPipe
+JSONPipe
+106. Can I create custom pipe in Angular?
+Answer:
+Yes, you can create custom pipes by defining a class and using the @Pipe decorator.
+
+Example:
+
+typescript
+Copy code
+@Pipe({
+  name: 'reverse'
+})
+export class ReversePipe implements PipeTransform {
+  transform(value: string): string {
+    return value.split('').reverse().join('');
+  }
+}
+107. What is Chaining pipe?
+Answer:
+Chaining pipes means using multiple pipes together in an Angular template. Each pipe transforms the data sequentially.
+
+Example:
+
+html
+Copy code
+<p>{{ value | pipe1 | pipe2 }}</p>
+108. What is @Pipe Decorator?
+Answer:
+@Pipe is a decorator used to define custom pipes. It requires the name property to reference the pipe in templates.
+
+Example:
+
+typescript
+Copy code
+@Pipe({
+  name: 'capitalize'
+})
+export class CapitalizePipe implements PipeTransform {
+  transform(value: string): string {
+    return value.toUpperCase();
+  }
+}
+109. How many types of Pipes are supported by Angular?
+Answer:
+Angular supports two types of pipes:
+
+Pure Pipes: These pipes only re-run when their input data changes.
+Impure Pipes: These pipes are re-evaluated every time change detection runs, regardless of input changes.
+110. How can you define or set your pipe as pure or impure?
+Answer:
+You can set a pipe as pure or impure in the @Pipe decorator by using the pure property. By default, pipes are pure.
+
+Example:
+
+typescript
+Copy code
+@Pipe({ name: 'myPipe', pure: false })
+export class MyPipe implements PipeTransform {
+  transform(value: string): string {
+    return value;
+  }
+}
+111. Can I create any pipe in Angular if yes then How?
+Answer:
+Yes, you can create a custom pipe by using the @Pipe decorator and implementing the transform() method.
+
+Example:
+
+typescript
+Copy code
+@Pipe({ name: 'reverse' })
+export class ReversePipe implements PipeTransform {
+  transform(value: string): string {
+    return value.split('').reverse().join('');
+  }
+}
+112. What is an AsyncPipe in Angular?
+Answer:
+The AsyncPipe subscribes to an Observable or Promise and automatically updates the view when the value changes. It also unsubscribes automatically when the component is destroyed.
+
+Example:
+
+html
+Copy code
+<p>{{ observableData | async }}</p>
+Services
+113. What is services?
+Answer:
+Services are classes in Angular that provide logic, data, or functionality that can be shared across components. They are often used for handling business logic or making HTTP requests.
+
+114. HTTP Services?
+Answer:
+HTTP Services in Angular are used to communicate with a backend API using the HttpClient module. They allow you to perform GET, POST, PUT, DELETE, and other HTTP operations.
+
+Example:
+
+typescript
+Copy code
+@Injectable({
+  providedIn: 'root'
+})
+export class MyService {
+  constructor(private http: HttpClient) {}
+
+  getData() {
+    return this.http.get('api/data');
+  }
+}
+115. What are the different HTTP Verbs supported by Angular?
+Answer:
+Angular supports the following HTTP verbs:
+
+GET - Retrieve data from the server.
+POST - Send data to the server to create a resource.
+PUT - Update a resource on the server.
+DELETE - Delete a resource from the server.
+PATCH - Apply partial modifications to a resource.
+OPTIONS - Get the allowed methods for a resource.
+116. What are the differences between Patch() and Put()?
+Answer:
+
+PATCH: Used for partial updates to a resource (only modified fields are sent to the server).
+PUT: Replaces an entire resource (all fields are sent to the server).
+117. Why are we using services to transfer the data when we have @Input and @Output?
+Answer:
+@Input and @Output are used for communication between parent and child components. However, services are used to share data across unrelated components (i.e., when they don't have a parent-child relationship).
+
+118. How can we send the value from one component to another using service and they have no relation of parent and child?
+Answer:
+You can use a service to send data between unrelated components. The service acts as a communication bridge and can store the data in a shared state.
+
+Example:
+
+typescript
+Copy code
+@Injectable({
+  providedIn: 'root'
+})
+export class DataService {
+  private dataSource = new BehaviorSubject<any>(null);
+  currentData = this.dataSource.asObservable();
+
+  changeData(data: any) {
+    this.dataSource.next(data);
+  }
+}
+119. What is providers?
+Answer:
+Providers are used in Angular to specify how a service is created and injected into components or other services.Here are the answers to the next set of Angular interview questions with examples and easy explanations:
+
+133. What is Routing in Angular?
+Answer:
+Routing in Angular is the mechanism that allows navigation between views or pages of an Angular application. It helps users to navigate to different views based on the URL. This is typically done by configuring routes and using a router to handle navigation.
+
+Example:
+
+typescript
+Copy code
+const routes: Routes = [
+  { path: 'home', component: HomeComponent },
+  { path: 'about', component: AboutComponent }
+];
+134. How can you define routing in Angular?
+Answer:
+Routing is defined in Angular by creating an array of route objects that map URL paths to components. These routes are provided in the RouterModule within the Angular module.
+
+Example:
+
+typescript
+Copy code
+import { RouterModule, Routes } from '@angular/router';
+
+const routes: Routes = [
+  { path: 'home', component: HomeComponent },
+  { path: 'contact', component: ContactComponent }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule {}
+135. What is a RouterOutlet?
+Answer:
+RouterOutlet is a directive that acts as a placeholder where the routed component will be displayed. It is used in the template of a component that handles the layout for the routes.
+
+Example:
+
+html
+Copy code
+<router-outlet></router-outlet>
+136. What are Router Links?
+Answer:
+routerLink is a directive used to link to a particular route in Angular. It binds a URL path to an element (usually a link or button), so when clicked, it navigates to the corresponding route.
+
+Example:
+
+html
+Copy code
+<a [routerLink]="['/home']">Home</a>
+137. What is Router State?
+Answer:
+Router state refers to the information about the current state of the router, including the active route, parameters, query parameters, and other metadata related to the route. It can be accessed programmatically.
+
+138. What are Router events?
+Answer:
+Router events are a series of lifecycle events triggered by the Angular router during the process of navigating between routes. These events allow you to track the progress of navigation, such as before or after navigation.
+
+Example:
+
+typescript
+Copy code
+import { Router, NavigationStart } from '@angular/router';
+
+constructor(private router: Router) {
+  this.router.events.subscribe(event => {
+    if (event instanceof NavigationStart) {
+      console.log('Navigation started');
+    }
+  });
+}
+139. What is Wildcard route?
+Answer:
+A wildcard route is used to handle undefined routes (i.e., 404 pages). It matches any path that hasn’t been defined in the route configuration.
+
+Example:
+
+typescript
+Copy code
+const routes: Routes = [
+  { path: '**', component: NotFoundComponent }
+];
+140. What is pathMatch property in routing?
+Answer:
+The pathMatch property specifies how the router should match the URL. There are two types:
+
+full: The path must exactly match the entire URL.
+prefix: The URL will match if it starts with the given path.
+Example:
+
+typescript
+Copy code
+const routes: Routes = [
+  { path: '', redirectTo: '/home', pathMatch: 'full' }
+];
+141. How can we pass parameter in Routing?
+Answer:
+You can pass parameters in the route by defining them in the route path and then retrieving them using the ActivatedRoute service.
+
+Example:
+
+typescript
+Copy code
+// Defining route with parameter
+const routes: Routes = [
+  { path: 'product/:id', component: ProductDetailComponent }
+];
+
+// Retrieving the parameter in the component
+import { ActivatedRoute } from '@angular/router';
+
+constructor(private route: ActivatedRoute) {
+  this.route.paramMap.subscribe(params => {
+    const productId = params.get('id');
+    console.log(productId);
+  });
+}
+142. What are the guard interfaces supported by the router?
+Answer:
+Angular provides the following guard interfaces:
+
+CanActivate: Used to check if a route can be activated.
+CanDeactivate: Used to check if a route can be deactivated.
+CanLoad: Used to check if a module can be loaded.
+Resolve: Used to fetch data before a route is activated.
+143. Difference between [routerLink] and routerLink?
+Answer:
+
+[routerLink] is used when you want to bind a dynamic value to the routerLink directive, often using Angular's data binding.
+routerLink without square brackets is used to statically assign a path.
+Example:
+
+html
+Copy code
+<!-- Dynamic binding -->
+<a [routerLink]="['/home']">Home</a>
+
+<!-- Static binding -->
+<a routerLink="/home">Home</a>
+Forms
+144. What is Form and how many strategies we have for developing the form?
+Answer:
+A form in Angular allows the user to input data. Angular supports two form strategies:
+
+Template-driven forms: Forms are defined using the template, and data binding is handled via directives.
+Reactive forms: Forms are defined programmatically in the component using FormControl and FormGroup.
+145. What is Template-driven and Reactive form and why we are using in Angular?
+Answer:
+
+Template-driven form: Forms are defined directly in the template using directives like ngModel. It is simple but less scalable.
+Reactive form: Forms are defined in the component using FormGroup, FormControl, and FormBuilder. It is more powerful, scalable, and better suited for complex forms.
+Example of template-driven form:
+
+html
+Copy code
+<form #f="ngForm">
+  <input name="name" ngModel />
+</form>
+Example of reactive form:
+
+typescript
+Copy code
+this.form = this.fb.group({
+  name: ['']
+});
+146. Which steps are used to build a form with template-driven?
+Answer:
+
+Import FormsModule in the module.
+Create a form in the template using ngForm and ngModel.
+Bind the form controls to a model.
+147. When we will use the form using Template-driven, which module we have to add and where?
+Answer:
+To use template-driven forms, you need to import the FormsModule into the module.
+
+typescript
+Copy code
+@NgModule({
+  imports: [FormsModule]
+})
+export class AppModule {}
+148. How many ways can we add form validation?
+Answer:
+You can add validation in Angular forms using:
+
+Built-in validators (e.g., required, minlength, email).
+Custom validators (create your own logic).
+149. How will we use Template-Driven Form Validation?
+Answer:
+You can use built-in validations or custom validations by using directives like required, minlength, etc., within the form fields.
+
+html
+Copy code
+<input name="email" ngModel required email />
+150. Why are we checking dirty and touched?
+Answer:
+
+dirty: Indicates if the form control’s value has changed from the initial value.
+touched: Indicates if the control has been focused and blurred by the user.
+These are used to check the form’s state and display validation feedback.
+
+151. What is Reactive Forms?
+Answer:
+Reactive forms are model-driven forms defined in the component class using FormGroup, FormControl, and FormBuilder. This approach is more flexible and scalable for complex forms.
+
+152. When we will use the form using Reactive, which module we have to add and where?
+Answer:
+To use reactive forms, you need to import ReactiveFormsModule in your module.
+
+typescript
+Copy code
+@NgModule({
+  imports: [ReactiveFormsModule]
+})
+export class AppModule {}
+153. What is Dynamic Form and how can we implement it in Angular application?
+Answer:
+A dynamic form is a form that is generated dynamically based on data. You can use FormGroup, FormControl, and FormArray to generate a form based on an array or object.
+
+154. Which classes are used to show the form according to the status of the form?
+Answer:
+
+ng-valid: The form or control is valid.
+ng-invalid: The form or control is invalid.
+ng-touched: The form or control has been touched.
+ng-untouched: The form or control has not been touched.
+Testing Based
+155. What is unit testing?
+Answer:
+Unit testing is a type of testing where individual units or components of an application are tested in isolation.
+
+156. What is the need for Karma and Jasmine in Angular?
+Answer:
+
+Karma is a test runner that allows you to run your tests in different browsers.
+Jasmine is a testing framework that provides functions like describe(), it(), and expect() to define and execute tests.
+157. How can we use Karma and Jasmine in Angular for testing?
+Answer:
+Karma is configured automatically with Angular CLI to run tests, and Jasmine is used to define test cases. You write your test cases in .spec.ts files.
